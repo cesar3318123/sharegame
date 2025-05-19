@@ -4,24 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrarse</title>
-    <link rel="stylesheet" href="css/reg.css" />
+    <link rel="stylesheet" href="/pages/css/reg.css" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    
 </head>
 <body>
     <h1>Registrarse</h1>
-    <form action="../js/ruta_de_Destino">
+    <form id="registroForm">
         <label for="name">Nombre 👤</label> 
-        <input type="text" id="name" name="name">
+        <input type="text" id="name" name="username">
 
         <label for="email1">Correo ✉️</label> 
-        <input type="email" id="email1" name="email1">
+        <input type="email" id="email1" name="email">
 
         <label for="password1">Contraseña 🧷</label>
-        <input type="password" id="password1" name="password1">
+        <input type="password" id="password1" name="password">
 
         <input type="submit" value="Enviar 🚀">
-        <button class="cancelar">Cancelar registro ❌</button>
+        
 
     </form>
+
+    <button class="cancelar" id="fall">Cancelar registro ❌</button>
 </body>
+<script src="/pages/js/reg.js"></script>
 </html>

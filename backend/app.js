@@ -5,6 +5,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
+const registerRouter = require('./routes/register');
+
 
 
 const app = express();
@@ -25,6 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(limiter);
+app.use('/', registerRouter);
 
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
@@ -33,7 +36,23 @@ app.use(express.static(path.join(__dirname, '..', 'frontend')));
 // Rutas
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'frontend', 'pages', 'log.html'));
+    
   });
+
+app.get('/post.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'pages', 'post.html'));
+});
+
+
+app.get('/profile.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'pages', 'profile.html'));
+});
+
+app.get('/reg.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'pages', 'reg.html'));
+});
+
+
 
 
 // Aquí puedes importar rutas reales:
