@@ -6,19 +6,22 @@
     <title>Log</title>
     <link rel="stylesheet" href="/pages/css/log.css" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <h1>Iniciar sesión</h1>
-   <form action="../js/proximo_archivo" method="post">
+   <form id="loginForm">
     <label for="correo">Correo ✉️</label> 
-    <input type="email" id="correo" name="correo" required>
+    <input type="email" id="email1" name="email" required>
 
     <label for="contrasena">Contraseña 🧷</label>
-    <input type="password" id="contrasena" name="contrasena" required>
+    <input type="password" id="password1" name="password" required>
 
 
     <input type="submit" value="Entrar al juego 🔓">
 
    </form> 
+   <p >¿No estas registrado?</p><button id="btnregister">Registrarse</button>
 </body>
+    <script src="/pages/js/log.js"></script>
 </html>
