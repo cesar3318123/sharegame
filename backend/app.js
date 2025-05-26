@@ -6,6 +6,11 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const registerRouter = require('./routes/register');
+const axios = require('axios');
+require('dotenv').config();
+
+
+
 
 
 
@@ -28,8 +33,44 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(limiter);
 app.use('/', registerRouter);
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https://www.google.com", "https://www.gstatic.com"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        frameSrc: ["'self'", "https://www.google.com"],
+        connectSrc: ["'self'", "https://www.google.com", "https://www.gstatic.com"],
+        imgSrc: ["'self'", "https://www.google.com", "data:"],
+        imgSrc: ["'self'", "https://www.google.com", "data:", "blob:"]
+      },
+    },
+  })
+);
+
 
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
+
+
+app.post('/api/login', async (req, res) => {
+  const recaptchaToken = req.body['g-recaptcha-response'];
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+
+  try {
+    const verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`;
+    const response = await axios.post(verifyURL);
+
+    if (!response.data.success) {
+      return res.status(403).json({ message: 'reCAPTCHA falló.' });
+    }
+
+    res.status(200).json({ message: 'Autenticación exitosa.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al validar reCAPTCHA.' });
+  }
+});
 
 
 
@@ -50,6 +91,10 @@ app.get('/profile.html', (req, res) => {
 
 app.get('/reg.html', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'pages', 'reg.html'));
+});
+
+app.get('/friend.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'pages', 'friend.html'));
 });
 
 
