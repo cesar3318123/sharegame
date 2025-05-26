@@ -2,6 +2,41 @@
     box-sizing: border-box;
     font-family: 'Orbitron', sans-serif;
   }
+
+
+.logo {
+  display: flex; /* Alinea hijos horizontalmente */
+  align-items: center; /* Centra verticalmente los hijos */
+  gap: 20px; /* Espacio entre imagen y texto */
+  
+  width: 1500px;
+  height: 300px;
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #000000;
+  font-family: Arial, sans-serif;
+}
+
+/* Opcional: Estilo para la imagen */
+.logo img {
+  width: 100px;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Opcional: Estilo para el texto con efecto neón */
+.logo h1 {
+  color: #ff0000;
+  font-size: 48px;
+  text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+}
+
+
+
+
   
   body {
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);

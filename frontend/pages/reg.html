@@ -6,11 +6,12 @@
     <title>Registrarse</title>
     <link rel="stylesheet" href="/pages/css/reg.css" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     
 </head>
 <body>
     <h1>Registrarse</h1>
-    <form id="registroForm">
+    <form id="registroForm" action="/api/login" method="POST">
         <label for="name">Nombre 👤</label> 
         <input type="text" id="name" name="username">
 
@@ -19,6 +20,8 @@
 
         <label for="password1">Contraseña 🧷</label>
         <input type="password" id="password1" name="password">
+
+        <div class="g-recaptcha" data-sitekey="6Le_uEArAAAAAPABHpsZrotxB_zxHgQHUSj4R051"></div>
 
         <input type="submit" value="Enviar 🚀">
         

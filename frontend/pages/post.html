@@ -6,7 +6,7 @@
     <title>Apartado de noticias</title>
     <link rel="stylesheet" href="/pages/css/post.css" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-    <script src="/pages/js/post.js"></script>
+    
 
 </head>
 <body>
@@ -14,17 +14,27 @@
 
         <img src="">
         <p id="inserted_name">Bienvenido</p>
+        
 
 
     </div> 
     <div class="information"> 
 
-        <button id="btngopage">Ir a mi perfil</button>
-        
-        <label for="search">Buscar clanes</label>
-        <input type="text" id="search" name="search">
+
+<form id="searchForm">
+  <input type="text" id="search" name="search" placeholder="Buscar usuario" />
+  <button type="submit">Buscar</button>
+  <button id="btnfriend">Amigos</button>
+</form>
+
+<div id="friendModal" style="display: none;"></div>
+
+<div id="results"></div>
 
     </div>
+
+            <button id="btngopage">Ir a mi perfil</button>
+
 
     <div>
         <!--Resultados disponibles de la busquedad de clanes-->
@@ -42,6 +52,7 @@
 
     </div>
 </body>
+<script src="/pages/js/post.js"></script>
 
 
 </html>

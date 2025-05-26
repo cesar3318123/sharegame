@@ -9,26 +9,55 @@
 </head>
 <body>
     <div class="bandeja_perfil">
-    <img src="/pages/img/perfildefault.jpeg" alt="Logo de Sharegame">
+    <img id="profile-img" alt="Imagen de perfil" width="150" height="150">
+    <input type="file" id="file-input" style="display: none" accept="image/*">
+    <button id="btn-image">Cambiar imagen</button>
     <p>Nombre:</p>
-    <p>Apodo:</p>
+    <p id = "username"></p>
     </div>
 
 
     <div>
-        <img>
-        <button>Subir video o agregar publicación</button>
-        <button>Inicia un foro</button>
-        <button>Comparte tus pensamientos</button>
+        
+        <button id="openModal">Agregar publicación</button>
+
     </div>
 
-    <div class="groupe">
-        <P>Mis grupos favoritos:</P>
-    </div>
 
-    <div>
-        <p>Mis publicaciones:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="posts-container" style="max-height: 600px; overflow-y: auto; display: flex; flex-direction: column;  gap: 20px;"></div>
+
+
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h3>New Post</h3>
+      <form id="postForm">
+        <input type="text" name="title" placeholder="Title" required />
+        <textarea name="description" rows="3" placeholder="What's on your mind?" required></textarea>
+        <input type="file" name="image" accept="image/*" />
+        <div>
+          <button type="submit">Post</button>
+          <button type="button" id="cancelModal">Cancel</button>
+        </div>
+      </form>
     </div>
+  </div>
 
 </body>
+
+    <script src="/pages/js/profile.js"></script>
 </html>
