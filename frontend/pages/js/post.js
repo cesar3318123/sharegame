@@ -66,7 +66,7 @@ document.getElementById('btnfriend').addEventListener('click', async () => {
       modal.innerHTML = `
         <h4>Amigos</h4>
         <ul>
-          ${friends.map(f => `<li>${f.username} (${f.email})</li>`).join('')}
+          ${friends.map(f => `<li>${f.username}</li>`).join('')}
         </ul>
         <button id="closeModal">Cerrar</button>
       `;
@@ -86,3 +86,33 @@ document.getElementById('btnfriend').addEventListener('click', async () => {
     });
   }
 });
+
+
+
+async function fetchFriendsAndMyPosts(userId) {
+  const response = await fetch(`/api/posts/friends/${userId}`);
+  const posts = await response.json();
+
+  const container = document.getElementById('friends-posts-container');
+  container.innerHTML = ''; // limpiar
+
+  posts.forEach(post => {
+    const postElement = document.createElement('div');
+    postElement.style.border = '1px solid #ccc';
+    postElement.style.padding = '10px';
+    postElement.style.borderRadius = '8px';
+    postElement.style.background = '#646464';
+    postElement.style.marginBottom = '10px';
+
+    postElement.innerHTML = `
+      <h3>${post.title}</h3>
+      <p>${post.description}</p>
+      ${post.image ? `<img src="${post.image}" alt="Post image" style="max-width: 100%; height: auto;" />` : ''}
+      <small>${new Date(post.created_at).toLocaleString()}</small>
+    `;
+
+    container.appendChild(postElement);
+  });
+}
+
+fetchFriendsAndMyPosts(userId);

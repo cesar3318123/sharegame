@@ -45,6 +45,7 @@ app.use(
         connectSrc: ["'self'", "https://www.google.com", "https://www.gstatic.com"],
         imgSrc: ["'self'", "https://www.google.com", "data:"],
         imgSrc: ["'self'", "https://www.google.com", "data:", "blob:"]
+
       },
     },
   })
