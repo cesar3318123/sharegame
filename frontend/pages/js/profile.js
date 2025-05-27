@@ -77,7 +77,7 @@ const modal = document.getElementById("modal");
       e.preventDefault();
 
       const formData = new FormData(form);
-      formData.append("user_id", 1); // Replace with actual logged-in user ID
+      formData.append("user_id", userId);
 
       try {
         const response = await fetch("/api/posts", {
@@ -112,7 +112,7 @@ const modal = document.getElementById("modal");
     postElement.style.border = '1px solid #ccc';
     postElement.style.padding = '10px';
     postElement.style.borderRadius = '8px';
-    postElement.style.background = '#A5A5A5';
+    postElement.style.background = '#646464';
 
 
     postElement.innerHTML = `

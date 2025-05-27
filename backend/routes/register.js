@@ -8,6 +8,7 @@ const multer = require("multer");
 const upload = multer();
 
 
+
 function generateAccessToken(user) {
   return jwt.sign(
     { id: user.id, role: user.role },
@@ -23,6 +24,7 @@ function generateRefreshToken(user) {
     { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN }
   );
 }
+
 
 
 
@@ -272,6 +274,86 @@ router.get('/users/:id/profile-image1', async (req, res) => {
     res.status(500).send('Error al recuperar la imagen');
   }
 });
+
+
+
+
+router.post('/add', async (req, res) => {
+  const userId = parseInt(req.body.user_id);
+  const friendId = parseInt(req.body.friend_id);
+
+  // Validamos datos recibidos
+  if (!userId || !friendId) {
+    return res.status(400).send("Faltan datos.");
+  }
+
+  if (userId === friendId) {
+    return res.status(400).send("No puedes agregarte a ti mismo.");
+  }
+
+  try {
+    // Insertamos la amistad directa
+    await db.query(`
+      INSERT INTO friendships (user_id, friend_id)
+      VALUES (?, ?)
+      ON DUPLICATE KEY UPDATE created_at = CURRENT_TIMESTAMP
+    `, [userId, friendId]);
+
+    // (Opcional) amistad mutua
+    await db.query(`
+      INSERT INTO friendships (user_id, friend_id)
+      VALUES (?, ?)
+      ON DUPLICATE KEY UPDATE created_at = CURRENT_TIMESTAMP
+    `, [friendId, userId]);
+
+    res.status(200).send("Amistad agregada.");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error al agregar amigo.");
+  }
+});
+
+
+
+router.get('/api/posts/friends/:userId', async (req, res) => {
+  const userId = parseInt(req.params.userId);
+
+  if (!userId) return res.status(400).send("Falta userId");
+
+  try {
+    const [posts] = await db.query(`
+      SELECT p.*
+      FROM posts p
+      WHERE p.user_id = ?
+         OR p.user_id IN (
+           SELECT friend_id FROM friendships WHERE user_id = ?
+           UNION
+           SELECT user_id FROM friendships WHERE friend_id = ?
+         )
+      ORDER BY p.created_at DESC
+    `, [userId, userId, userId]);
+
+    // 👇 Aquí convertimos las imágenes LONGBLOB a base64
+    const postsWithImages = posts.map(post => ({
+      ...post,
+      image: post.image
+        ? `data:image/jpeg;base64,${post.image.toString('base64')}`
+        : null,
+    }));
+
+    res.json(postsWithImages);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error al obtener posts");
+  }
+});
+
+
+
+
+
+
+
 
 
 
