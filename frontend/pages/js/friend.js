@@ -11,7 +11,20 @@
     }
   });
 
+
+
 document.addEventListener('DOMContentLoaded', () => {
+
+
+
+
+  
+
+
+
+
+
+
   const username = localStorage.getItem('username_friend');
   const id = localStorage.getItem('id_friend');
 
@@ -42,7 +55,12 @@ const userId = localStorage.getItem('id_friend');
 
     async function fetchUserPosts() {
   const response = await fetch(`/api/posts/user/${userId}`);
+
+
+
   const posts = await response.json();
+
+
 
   const container = document.getElementById('posts-container');
   container.innerHTML = ''; // Limpia antes
@@ -64,12 +82,24 @@ const userId = localStorage.getItem('id_friend');
 
     container.appendChild(postElement);
   });
+
+
+
+
+
+
+
+
 }
 
 fetchUserPosts();
 
 
 document.getElementById('addFriendBtn').addEventListener('click', async () => {
+
+  if(localStorage.getItem('username') === 'guest') {
+    return alert('Registrate para agregar amigos.');
+  } else {
   // Obtenemos los IDs del localStorage
   const userId = localStorage.getItem('userId');
   const friendId = localStorage.getItem('id_friend');
@@ -106,5 +136,72 @@ document.getElementById('addFriendBtn').addEventListener('click', async () => {
   } catch (err) {
     console.error(err);
     alert('Ocurrió un error al agregar al amigo.');
-  }
+  }}
 });
+
+
+document.getElementById('btnGoBack').addEventListener('click', () => {
+  window.location.href = '/post.html'; 
+})
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+
+    fetch(`/user-role/${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.role === 'admin') {
+          const adminControls = document.getElementById('adminControls');
+          const button = document.createElement('button');
+          button.textContent = 'Borrar usuario';
+          button.className = 'admin-button'; // Estílalo con CSS externo
+          button.addEventListener('click', () => {
+            const userId = localStorage.getItem('id_friend');
+            deleteUser(userId)
+              
+            window.location.href = '/post.html'; // Ruta de tu panel admin
+          });
+          adminControls.appendChild(button);
+        }
+      })
+      .catch(err => {
+        console.error('Error al obtener rol del usuario:', err);
+      });
+  });
+
+
+  async function deleteUser(userId) {
+              try {
+                const response = await fetch(`/users/${userId}`, {
+                  method: 'DELETE',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                });
+                if (!response.ok) {
+                  const error = await response.json();
+                  console.error('Error al eliminar usuario:', error.message);
+                  return;
+                }
+                
+                const result = await response.json();
+                console.log('Usuario eliminado:', result.message);
+              
+              } catch (error) {
+              console.error('Error de red al eliminar usuario:', error);
+            
+            } 
+          }
+
+
+
+
+
+
+
+
+
+

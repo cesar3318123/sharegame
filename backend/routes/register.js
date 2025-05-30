@@ -109,7 +109,7 @@ router.post('/login', async (req, res) => {
 });
 
 
-// Ruta para buscar usuarios por nombre exacto o por inicial de nombre
+
 router.get('/api/users', async (req, res) => {
   const { search } = req.query;
 
@@ -118,11 +118,10 @@ router.get('/api/users', async (req, res) => {
   }
 
   try {
-    // Extraemos la primera letra para búsqueda por inicial
+
     const firstLetter = search.charAt(0);
 
-    // Consulta que busca usuarios cuyo username sea igual al término de búsqueda
-    // o que empiecen con la misma inicial (case insensitive)
+
     const [users] = await db.query(
       `SELECT id, username FROM users 
        WHERE LOWER(username) = LOWER(?) 
@@ -315,6 +314,32 @@ router.post('/add', async (req, res) => {
 
 
 
+router.post('/remove', async (req, res) => {
+  const userId = parseInt(req.body.user_id);
+  const friendId = parseInt(req.body.friend_id);
+
+  if (!userId || !friendId) {
+    return res.status(400).send("Faltan datos.");
+  }
+
+  try {
+    // Eliminamos amistad en ambas direcciones
+    await db.query(`
+      DELETE FROM friendships
+      WHERE (user_id = ? AND friend_id = ?)
+         OR (user_id = ? AND friend_id = ?)
+    `, [userId, friendId, friendId, userId]);
+
+    res.status(200).send("Amistad eliminada.");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error al eliminar amigo.");
+  }
+});
+
+
+
+
 router.get('/api/posts/friends/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId);
 
@@ -322,8 +347,10 @@ router.get('/api/posts/friends/:userId', async (req, res) => {
 
   try {
     const [posts] = await db.query(`
-      SELECT p.*
+      SELECT p.*,
+      u.username
       FROM posts p
+      JOIN users u ON p.user_id = u.id
       WHERE p.user_id = ?
          OR p.user_id IN (
            SELECT friend_id FROM friendships WHERE user_id = ?
@@ -345,6 +372,61 @@ router.get('/api/posts/friends/:userId', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Error al obtener posts");
+  }
+});
+
+
+
+router.get('/user-role/:id', async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const [rows] = await db.query('SELECT role FROM users WHERE id = ?', [userId]);
+    if (rows.length === 0) return res.status(404).json({ error: 'Usuario no encontrado' });
+    res.json({ role: rows[0].role });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+});
+
+
+router.delete('/users/:id', async (req, res) => {
+  const userId = parseInt(req.params.id, 10);
+
+  if (isNaN(userId)) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
+  try {
+    const [result] = await db.execute('DELETE FROM users WHERE id = ?', [userId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    return res.json({ message: 'Usuario eliminado correctamente' });
+  } catch (err) {
+    console.error('Error al eliminar usuario:', err);
+    return res.status(500).json({ error: 'Error del servidor' });
+  }
+});
+
+
+
+router.delete('/api/posts/:id', async (req, res) => {
+  const postId = req.params.id;
+
+  try {
+    const [result] = await db.execute('DELETE FROM posts WHERE id = ?', [postId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Publicación no encontrada.' });
+    }
+
+    res.status(200).json({ message: 'Publicación eliminada correctamente.' });
+  } catch (error) {
+    console.error('Error al eliminar la publicación:', error);
+    res.status(500).json({ message: 'Error del servidor al eliminar la publicación.' });
   }
 });
 

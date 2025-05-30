@@ -12,8 +12,10 @@
 <body>
     <div class="welcome">
 
-        <img src="">
-        <p id="inserted_name">Bienvenido</p>
+
+        <button id="btnlogout">Cerrar sesión 🔐</button>
+        <button id="btnlog_register">Registrarse 🔑</button>
+
         
 
 
@@ -25,27 +27,25 @@
   <input type="text" id="search" name="search" placeholder="Buscar usuario" />
   <button type="submit">Buscar</button>
   <button id="btnfriend">Amigos</button>
+  <button id="btngopage">Ir a mi perfil</button>
+  <div id="adminControls" style="margin-top: 10px;"></div>
 </form>
 
-<div id="friendModal" style="display: none;"></div>
+<div id="friendModal" style="display: none; background-color: #000000;"></div>
 
 <div id="results"></div>
 
-    </div>
 
-            <button id="btngopage">Ir a mi perfil</button>
-
-
-    <div>
         <!--Resultados disponibles de la busquedad de clanes-->
     </div>
 
     <div>
-        <p>Publicaciones de amigos</p>
+        <h2>Publicaciones de amigos</h2>
+        <p>Agrega amigos para ver sus publicaciones</p>
 
     </div>
 
-    <div id="friends-posts-container" style="height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-top: 20px;">
+    <div id="friends-posts-container" style="height: 400px; overflow-y: auto; border: 1px solid #000000; padding: 10px; margin-top: 20px;">
   <!-- Posts aparecerán aquí -->
 </div>
 
@@ -54,9 +54,14 @@
     <div>
 
         <!--Aqui se pondran las publicaciones-->
+        
 
     </div>
+
+
+    <img src="/pages/img/final.png" alt="final">
 </body>
+
 <script src="/pages/js/post.js"></script>
 
 
