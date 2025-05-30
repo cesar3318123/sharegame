@@ -29,6 +29,7 @@ img {
 }
 
 
+
 button {
     background-color: rgb(37, 85, 228);
     color: #000;
@@ -44,6 +45,8 @@ button {
     background-color: #df6e6e;
     transform: scale(1.05);
   }
+
+  
 
 
 
@@ -74,4 +77,13 @@ button {
   padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.fit {
+
+  display: inline-block;
+  padding: 8px;
+  max-width: 90%; /* evita que se extienda demasiado */
+  font-size: 14px; 
+
 }

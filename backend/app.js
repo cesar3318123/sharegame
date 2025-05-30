@@ -18,7 +18,7 @@ const app = express();
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
-    max: 100, // máximo 100 peticiones por IP
+    max: 10000, // máximo 100 peticiones por IP
     standardHeaders: true,
     legacyHeaders: false,
 })
@@ -96,6 +96,10 @@ app.get('/reg.html', (req, res) => {
 
 app.get('/friend.html', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'pages', 'friend.html'));
+});
+
+app.get('/admin.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'pages', 'admin.html'));
 });
 
 

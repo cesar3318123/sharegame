@@ -3,6 +3,22 @@
     font-family: 'orbitron', sans-serif;
 }
 
+
+.admin-button {
+  background-color: #28a745; /* verde tipo Bootstrap */
+  color: rgb(0, 0, 0);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.admin-button:hover {
+  background-color: #218838; /* verde un poco más oscuro */
+}
+
 body {
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     color: #00fff7;

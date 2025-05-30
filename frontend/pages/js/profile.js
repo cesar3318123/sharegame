@@ -120,10 +120,38 @@ const modal = document.getElementById("modal");
       <p>${post.description}</p>
       ${post.image ? `<img src="${post.image}" alt="Post image" style="max-width: 100%; height: auto;" />` : ''}
       <small>${new Date(post.created_at).toLocaleString()}</small>
+      <button class="Post_delete" id="Post_delete" style="margin-top: 10px; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+      Borrar publicación
+      </button>
     `;
+
+    const deleteButton = postElement.querySelector('.Post_delete');
+    if (deleteButton) {
+      deleteButton.addEventListener('click', async () => {
+        try {
+          const deleteResponse = await fetch(`/api/posts/${post.id}`, {
+            method: 'DELETE'
+          });
+          if (deleteResponse.ok) {
+            postElement.remove(); // Elimina el elemento del DOM
+            alert('Publicación eliminada correctamente.');
+          } else {
+            alert('Error al eliminar la publicación.');
+          }
+        } catch (error) {
+          console.error('Error al eliminar la publicación:', error);
+          alert('Error al eliminar la publicación.');
+        }
+      });
+    }
 
     container.appendChild(postElement);
   });
 }
+
+
+document.getElementById('btnGoBack').addEventListener('click', () => {
+  window.location.href = '/post.html'; 
+})
 
 fetchUserPosts();
